@@ -59,7 +59,7 @@ for i in range(len(avet)):
 X_norm = np.zeros((len(avet),len(avet)))
 for i in range(len(X)):
     for j in range(len(X[0])):
-        X_norm[i,j] = X[i,j]/np.linalg.norm(X[:,j])
+        X_norm[i,j] = X[i,j]/(np.linalg.norm(X[:,j])*np.sqrt(massa))
 
 #calculando o q
 q0 = np.matmul(np.matmul(np.transpose(X_norm),m),x0)
@@ -74,14 +74,13 @@ for i in range(len(X)):
 # voltando para unidade fisica
 # xj(t) = Xji*Ai*exp(Bi*t)*sen(Ci*t) for i in range(5)
 
-# for j in range(len(X)):
-#     print("\nx_", j+1, "(t)=", end="", sep="")
-#     for i in range(len(X)):
-#         print('%.4f'%(X_norm[j,i]*A[i]), "*exp(", '%.4f'%B[i], "t)*sen(", '%.4f'%C[i], "t)", end="", sep="")
-#         if i is not len(X)-1 and X_norm[j,i+1]*A[i+1] > 0:
-#             print("+", end="", sep="")
-#descomentar para printar as respostas algébricas de x
-
+"""for j in range(len(X)):
+    print("\nx_", j+1, "(t)=", end="", sep="")
+    for i in range(len(X)):
+        print('%.4f'%(X_norm[j,i]*A[i]), "*exp(", '%.4f'%B[i], "t)*sen(", '%.4f'%C[i], "t)", end="", sep="")
+        if i is not len(X)-1 and X_norm[j,i+1]*A[i+1] > 0:
+            print("+", end="", sep="")
+"""#descomentar para printar as respostas algébricas de x
 t = np.linspace(0, 20, 1000)
 x = np.zeros((len(X), len(t)))
 for k in range(len(t)):
@@ -90,20 +89,19 @@ for k in range(len(t)):
 
 #plotagem - projetil
 
-[plt.plot(t, i) for i in x] #gráfico da resposta
-
-fig, ax = plt.subplots(1, 1)
+#[plt.plot(t, i) for i in x] #gráfico da resposta
+#plt.show()
+#fig, ax = plt.subplots(1, 1)
 
 def animate(j):
     ax.clear()
     [ax.plot(x[i, j], i + 1, ".") for i in range(len(x))]
-    ax.set_xlim([-300, 300])
+    ax.set_xlim([-np.max(x)*1.1, np.max(x)*1.1])
     ax.set_ylim([0, 6])
 
-ani = FuncAnimation(fig, animate, frames=len(x[0]), interval=20, repeat=False)
-plt.show()
-ani.save("resposta.gif")
-#descomentar esses comentários para salvar gif da resposta
+#ani = FuncAnimation(fig, animate, frames=len(x[0]), interval=20, repeat=False)
+#plt.show()
+#ani.save("resposta.gif") #descomentar esses comentários para salvar gif da resposta
 
 #plotagem - frequencias naturais
 t_nat = np.linspace(0, 5, 1000)
@@ -120,8 +118,8 @@ def animate2(j):
     ax2.set_ylim([0, 6])
 
 fig2, ax2 = plt.subplots(1, 1)
-# for k in range(5):
-#     ani2 = FuncAnimation(fig2, animate2, frames=len(t_nat), interval=5, repeat=True)
-#     ani2.save("freq"+str(k+1)+".gif")
-#     #plt.show()
-#     print(k) #descomentar para salvar gifs dos modos de vibração
+"""for k in range(5):
+    ani2 = FuncAnimation(fig2, animate2, frames=len(t_nat), interval=5, repeat=True)
+    ani2.save("freq"+str(k+1)+".gif")
+    #plt.show()
+    print(k)""" #descomentar para salvar gifs dos modos de vibração
